@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>클릭 시 색상 변경</title>
+    <style>
+        .shape {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="shape" id="myShape"></div>
+    <script>
+       const shape = document.getElementById('myShape');
+
+shape.addEventListener('click', () => {
+    const randomColor = getRandomColor();
+    shape.style.backgroundColor = randomColor;
+});
+
+function getRandomColor() {
+    const red = Math.floor(Math.random() * 256);
+    const green = Math.floor(Math.random() * 256);
+    const blue = Math.floor(Math.random() * 256);
+    return `rgb(${red}, ${green}, ${blue})`;
+}
+    </script>
+</body>
+</html>
