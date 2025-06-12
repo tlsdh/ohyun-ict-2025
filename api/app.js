@@ -48,7 +48,7 @@ document.querySelector("#post-form").addEventListener('submit',(e)=>{
     e.preventDefault()
     submit()
 })
-document.querySelector("#toggle_write").addEventListener("click",()=>{
+document.querySelector("#toggle-write").addEventListener("click",()=>{
     if(document.querySelector("#post-form").style.display == 'block'){
         document.querySelector("#post-form").style.display = 'none'
     }else{
