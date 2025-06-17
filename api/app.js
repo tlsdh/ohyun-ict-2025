@@ -1,14 +1,18 @@
-//fetch("https://crudcrud.com/api/cbfed77be6054adbbe1bbc56f3414044").then((res)=>{return res.json()}).then((json)=>{console.log(json)})
-console.log("??");
-const post_url = "https://crudcrud.com/api/7a26a0ca3d8148bea7f147354a5a5901/post";
+const post_url = "http://crud.tlol.me/tlsdh/post";
+let pagePointer = 0
 const init = async ()=>{
     const res = await fetch(post_url);
     const json = await res.json();
-    console.log(json);
-    json.forEach(post => {
+    const createPost = (post) => {
         const postLi = document.createElement("li");
-        postLi.innerText = post.title;
+        postLi.classList.add("post-container");
         document.querySelector("#board").appendChild(postLi);
+
+        const postTitle = document.createElement("span");
+        postTitle.innerText = post.title;
+        postTitle.classList.add("bold-text");
+        postLi.appendChild(postTitle);
+
         const contentDiv = document.createElement("div");
         contentDiv.innerText = post.content;
         postLi.appendChild(contentDiv);
@@ -19,24 +23,30 @@ const init = async ()=>{
             }else{
                 contentDiv.style.display = 'block';
             }
-        });
-    });
-
+        }); 
+    }
+    json.slice(0,5).forEach(createPost);
+    pagePointer+=5
+    document.querySelector("#post-more").addEventListener("click",()=>{
+        const prevPointer = pagePointer;
+        pagePointer = pagePointer+5
+        json.slice(prevPointer,pagePointer).forEach(createPost)
+    })
 }
+
 const write = async (data)=>{
     const res = await fetch(post_url,{
         method:"POST",
         headers:{
-            "Content-Type":"application/json",
+            "Content-Type": "application/json",
         },
         body:JSON.stringify(data)
     })
 }
 
-
 const submit = ()=>{
-    const title = document.querySelector('#title').value;
-    const content = document.querySelector('#content').value;
+    const title = document.querySelector("#title").value;
+    const content = document.querySelector("#content").value;
     const data = {
         title:title,
         content:content
@@ -44,10 +54,12 @@ const submit = ()=>{
     console.log(data)
     write(data);
 }
-document.querySelector("#post-form").addEventListener('submit',(e)=>{
+
+document.querySelector("#post-form").addEventListener("submit",(e)=>{
     e.preventDefault()
-    submit()
+    submit();
 })
+
 document.querySelector("#toggle-write").addEventListener("click",()=>{
     if(document.querySelector("#post-form").style.display == 'block'){
         document.querySelector("#post-form").style.display = 'none'
